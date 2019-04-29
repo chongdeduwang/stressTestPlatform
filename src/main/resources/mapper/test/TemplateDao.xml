@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.test.dao.TemplateManageDao">
+
+    <select id="queryObject" resultType="io.renren.modules.test.entity.TemplateEntity">
+		select * from data_template where template_id = #{value}
+	</select>
+
+    <select id="queryList" resultType="io.renren.modules.test.entity.TemplateEntity">
+        select * from data_template
+        <where>
+            <if test="templateName != null and templateName.trim() != ''">
+                template_name like concat('%', #{templateName}, '%')
+            </if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by add_time desc
+            </otherwise>
+        </choose>
+        <!--<if test="sidx != null and sidx.trim() != ''">-->
+        <!--order by ${sidx} ${order}-->
+        <!--</if>-->
+        <if test="offset != null and limit != null ">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(1) from data_template
+        <where>
+            <if test="templateName != null and templateName.trim() != ''">
+                template_name like concat('%', #{templateName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="io.renren.modules.test.entity.TemplateEntity" useGeneratedKeys="true"
+            keyProperty="templateId">
+		insert into data_template
+		(
+			`template_name`,
+			`status`,
+			`content`,
+			`add_by`
+		)
+		values
+		(
+			#{templateName},
+			#{status},
+			#{content},
+			#{addBy}
+		)
+	</insert>
+
+    <update id="update" parameterType="io.renren.modules.test.entity.TemplateEntity">
+        update data_template
+        <set>
+            <if test="templateName != null">`template_name` = #{templateName},</if>
+            <if test="status != null">`status` = #{status},</if>
+            <if test="content != null">`content` = #{content},</if>
+            <if test="updateBy != null">`update_by` = #{updateBy},</if>
+        </set>
+        where template_id = #{templateId}
+    </update>
+
+
+    <delete id="deleteBatch">
+        delete from data_template where id in
+        <foreach item="templateId" collection="array" open="(" separator="," close=")">
+            #{templateId}
+        </foreach>
+    </delete>
+
+</mapper>

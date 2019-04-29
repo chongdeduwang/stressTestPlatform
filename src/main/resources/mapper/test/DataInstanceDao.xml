@@ -8,18 +8,18 @@
 	</select>
 
     <select id="queryList" resultType="io.renren.modules.test.entity.DataManEntity">
-        select * from data_instance
-        <where>
+        select a.*,b.template_name from data_instance a,data_template b where a.template_id = b.template_id
+
             <if test="dataName != null and dataName.trim() != ''">
-                data_name like concat('%', #{dataName}, '%')
+               and a.data_name like concat('%', #{dataName}, '%')
             </if>
-        </where>
+
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
             </when>
             <otherwise>
-                order by add_time desc
+                order by a.add_time desc
             </otherwise>
         </choose>
         <!--<if test="sidx != null and sidx.trim() != ''">-->

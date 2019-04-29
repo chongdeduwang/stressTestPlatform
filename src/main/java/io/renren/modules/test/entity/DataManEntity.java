@@ -60,4 +60,11 @@ public class DataManEntity implements Serializable {
     @Setter
     @Getter
     private Date updateTime;
+    @Setter
+    @Getter
+    private String templateName;
+
+    @Setter
+    @Getter
+    private  int templateId;
 }
