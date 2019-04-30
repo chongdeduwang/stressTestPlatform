@@ -22,6 +22,10 @@
     <script src="../../js/common.js"></script>
     <script type="text/javascript" src="../../plugins/fileinput/js/fileinput.min.js"></script>
     <script type="text/javascript" src="../../plugins/fileinput/js/locales/zh.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
 <div id="rrapp" v-cloak>
@@ -68,10 +72,16 @@
                     </textarea>
                 </div>
             </div>
+            <el-form-item label="数据模板">
+                <el-radio-group v-model="form.resource">
+                    <el-radio label="线上品牌商赞助"></el-radio>
+                    <el-radio label="线下场地免费"></el-radio>
+                </el-radio-group>
+            </el-form-item>
             <div class="form-group">
                 <div class="col-sm-2 control-label"></div>
                 <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
-                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+                <input type="button" class="btn btn-warning" @click="reload" value="返回"/>
             </div>
         </form>
     </div>
