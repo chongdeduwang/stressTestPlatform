@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="io.renren.modules.test.dao.TemplateManageDao">
+<mapper namespace="io.renren.modules.test.dao.DataTemplateDao">
 
     <select id="queryObject" resultType="io.renren.modules.test.entity.TemplateEntity">
-		select * from data_template where template_id = #{value}
+		select * from data_template where template_type = #{templateType} and status = #{orderMode}
+
 	</select>
 
     <select id="queryList" resultType="io.renren.modules.test.entity.TemplateEntity">

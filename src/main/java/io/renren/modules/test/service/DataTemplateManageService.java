@@ -6,11 +6,11 @@ import io.renren.modules.test.entity.TemplateEntity;
 import java.util.List;
 import java.util.Map;
 
-public interface TemplateManageService {
+public interface DataTemplateManageService {
     /**
      * 根据ID，查询性能测试用例
      */
-    TemplateEntity queryObject(Long templateId);
+    TemplateEntity queryObject(String templateType,int status);
 
     /**
      * 查询模板列表

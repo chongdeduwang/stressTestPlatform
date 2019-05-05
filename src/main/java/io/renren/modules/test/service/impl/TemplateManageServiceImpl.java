@@ -1,23 +1,26 @@
 package io.renren.modules.test.service.impl;
 
-import io.renren.modules.test.dao.TemplateManageDao;
+import io.renren.modules.test.dao.DataTemplateDao;
 import io.renren.modules.test.entity.TemplateEntity;
-import io.renren.modules.test.service.TemplateManageService;
+import io.renren.modules.test.service.DataTemplateManageService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
-public class TemplateManageServiceImpl implements TemplateManageService {
+
+@Service("TemplManageService")
+public class TemplateManageServiceImpl implements DataTemplateManageService {
 
 
     @Resource
-    private TemplateManageDao templateManageDao;
+    private DataTemplateDao templateManageDao;
 
 
     @Override
-    public TemplateEntity queryObject(Long templateId) {
-        return templateManageDao.queryObject(templateId);
+    public TemplateEntity queryObject(String templateType,int status) {
+        return templateManageDao.queryObject(templateType,status);
     }
 
     @Override
@@ -27,7 +30,7 @@ public class TemplateManageServiceImpl implements TemplateManageService {
 
     @Override
     public int queryTotal(Map<String, Object> map) {
-        return queryTotal(map);
+        return templateManageDao.queryTotal(map);
     }
 
     @Override

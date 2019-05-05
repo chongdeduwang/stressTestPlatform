@@ -49,10 +49,42 @@ var vm = new Vue({
         showList: true,
         showEdit: false,
         showUpload: false,
+        showOrderModes: false,
+        showOrderEdit: false,
+        orderContent:{},
         title: null,
-        dataInstance: {}
+        dataInstance: {},
+        modes:'pick',
+        orderModes:1,
+
     },
     methods: {
+        getModeVal: function(event){
+            vm.modes = event.target.value;
+            vm.showOrderModes = true;
+            console.log(vm.showOrderModes+"   dklajfidjaiofja");
+        },
+        getSendModeVal: function(event){
+            vm.orderModes =  event.target.value;
+            $.ajax({
+                type: "GET",
+                url: baseURL + "/template/manage/"+vm.modes+"/"+vm.orderModes,
+                success: function (r) {
+                    if (r.code == 0) {
+                        vm.showOrderEdit = true;
+                        vm.orderContent= r.template.content;
+                        console.log(r.template.content);
+                    } else {
+                        alert(r.msg);
+                    }
+                }
+            });
+            if (vm.orderContent!=null&&vm.orderContent!==''){
+                for (var key in vm.orderContent) {
+                    
+                }
+            } 
+        },
         query: function () {
             if (vm.q.dataName != null) {
                 vm.reload();

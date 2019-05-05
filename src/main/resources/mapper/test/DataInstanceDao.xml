@@ -9,11 +9,6 @@
 
     <select id="queryList" resultType="io.renren.modules.test.entity.DataManEntity">
         select a.*,b.template_name from data_instance a,data_template b where a.template_id = b.template_id
-
-            <if test="dataName != null and dataName.trim() != ''">
-               and a.data_name like concat('%', #{dataName}, '%')
-            </if>
-
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}

@@ -2,7 +2,6 @@ package io.renren.modules.test.entity;
 
 
 import lombok.Data;
-import org.json.JSONString;
 
 import java.util.Date;
 
@@ -12,7 +11,7 @@ public class TemplateEntity {
     private String templateName;
     private String templateType;
     private int Status;
-    private JSONString content;
+    private String content;
     private String addBy;
     private String updateBy;
     private Date updateTime;
