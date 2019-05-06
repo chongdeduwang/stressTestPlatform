@@ -67,4 +67,7 @@ public class DataManEntity implements Serializable {
     @Setter
     @Getter
     private  int templateId;
+    @Setter
+    @Getter
+    private String content;
 }
