@@ -45,109 +45,66 @@ $(function () {
 var vm = new Vue({
     el: '#rrapp',
     data: {
+
         q: {
             dataName: null
         },
         showList: true,
         showEdit: false,
-        showOrderModes: false,
         showOrderEdit: false,
         orderContent: {},
         title: null,
         dataInstance: {},
+        content: {},
         modes: 'pick',
-        orderModes: 1,
-        text: '',
-        controlName: [],
+        orderMode: 0,
         inputs: [],
-
+        radio: 3
     },
     methods: {
-        getModeVal: function (event) {
-            vm.modes = event.target.value;
-            vm.showOrderModes = true;
-        },
-        getSendModeVal: function (event) {
-            vm.orderModes = event.target.value;
+        changeModes: function () {
+            vm.inputs=[],
             $.ajax({
                 type: "GET",
-                url: baseURL + "/template/manage/" + vm.modes + "/" + vm.orderModes,
+                url: baseURL + "/template/manage/" + vm.modes + "/" + vm.orderMode,
                 success: function (r) {
-                    if (r.code == 0) {
+                    if (r.code === 0) {
                         vm.showOrderEdit = true;
                         vm.orderContent = r.template.content;
-                        var jsonContent = JSON.parse(vm.orderContent);
-
-                        var text = '';
-                        for (var key in jsonContent) {
-
-
-
-
-                            console.log(key + "      11111");
-                            console.log(jsonContent[key] + "      22222");
-
-
-
-                            // vm.inputs.push({
-                            //     key,
-                            //     placeholder: 'test',
-                            //     label: 'this is label',
-                            // });
-                            if (!(jsonContent[key] instanceof Object)) {
-                                if (jsonContent[key].search("input") !== -1 || jsonContent[key].search("long") !== -1) {
-
-
-                                    var str = jsonContent[key];
-                                    var pattern = new RegExp(".*?(?=\\()");
-                                    var placeHolder = str.match(pattern);
-                                    vm.controlName.push(key);
-
+                        const order = JSON.parse(vm.orderContent);
+                        console.log(order);
+                        for (var key in order) {
+                            if (!(order[key] instanceof Object)) {
+                                if (order[key].search("input") !== -1) {
+                                    const pattern = new RegExp(".*?(?=\\()");
+                                    const placeHolder = order[key].match(pattern)[0];
                                     vm.inputs.push({
                                         key,
-                                        type:"input",
-                                        placeholder: placeHolder,
+                                        type: "input",
+                                        placeHolder: placeHolder,
                                         label: placeHolder
                                     });
-
-                                    // text = text + "<div class=\"form-group\">\n" +
-                                    //     "                    <div class=\"col-sm-10\">\n" +
-                                    //     "                        <div class=\"col-sm-2 control-label\">" + key + "</div>\n" +
-                                    //     "                        <input type=\"text\" class=\"form-control\" name='"+key+"' placeholder=\"" + placeHolder + "\"/>\n" +
-                                    //     "                    </div>\n" +
-                                    //     "                </div>"
-                                }else if (jsonContent[key].search("checkbox")!==-1){
-                                    var str = jsonContent[key];
-                                    var pattern = new RegExp(".*?(?=\\()");
-                                    var label = str.match(pattern);
+                                } else if (order[key].search("checkbox") !== -1) {
+                                    const pattern = new RegExp(".*?(?=\\()");
+                                    const label = order[key].match(pattern)[0];
                                     vm.inputs.push({
                                         key,
-                                        type:"checkbox",
+                                        type: "checkbox",
                                         checked: key,
                                         label: label
-                                    })
+                                    });
                                 }
-                            }else {
+                            } else {
 
                             }
-
-
                         }
-                        vm.text = text;
-                        console.log(vm.dataInstance);
 
-
-                        console.log(r.template.content);
+                        console.log(vm.inputs)
                     } else {
                         alert(r.msg);
                     }
                 }
             });
-            if (vm.orderContent != null && vm.orderContent !== '') {
-                for (var key in vm.orderContent) {
-
-                }
-            }
         },
         query: function () {
             if (vm.q.dataName != null) {
@@ -174,9 +131,8 @@ var vm = new Vue({
             });
         },
         saveOrUpdate: function () {
-            // for (var a in vm.controlName)
-
-            console.log(JSON.stringify(vm.dataInstance)+"formJson");
+            vm.dataInstance["content"] = vm.content;
+            console.log(JSON.stringify(vm.dataInstance) + "formJson");
             // if (vm.validator()) {
             //     return;
             // }
@@ -225,8 +181,7 @@ var vm = new Vue({
         reload: function (event) {
             vm.showList = true;
             vm.showEdit = false;
-            vm.showOrderModes=false;
-            vm.showOrderEdit=false;
+            vm.showOrderEdit = false;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
             $("#jqGrid").jqGrid('setGridParam', {
                 postData: {'dataName': vm.q.dataName},

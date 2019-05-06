@@ -265,5 +265,6 @@
     <orderEntry type="library" name="Maven: org.apache.commons:commons-exec:1.3" level="project" />
     <orderEntry type="library" name="Maven: ch.ethz.ganymed:ganymed-ssh2:build210" level="project" />
     <orderEntry type="library" name="index" level="application" />
+    <orderEntry type="library" name="index" level="application" />
   </component>
 </module>

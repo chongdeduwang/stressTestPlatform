@@ -1,6 +1,7 @@
 package io.renren.modules.test.controller;
 
 
+import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
@@ -39,7 +40,7 @@ public class DataManageController {
     }
 
     /**
-     * 性能测试用例信息
+     * 数据信息
      */
     @RequestMapping("/info/{id}")
     @RequiresPermissions("order:manage:info")
@@ -63,6 +64,29 @@ public class DataManageController {
         return R.ok().put("page", null);
     }
 //    @RequestMapping("")
+
+
+    /**
+     * 保存性能测试用例
+     */
+    @SysLog("保存数据实例")
+    @RequestMapping("/save")
+    @RequiresPermissions("order:manage:save")
+    public R save(@RequestBody DataManEntity dataManEntity) {
+//        ValidatorUtils.validateEntity(stressTestCase);
+//        // 生成用例时即生成用例的文件夹名，上传附件时才会将此名称落地成为文件夹。
+//        if (StringUtils.isEmpty(stressTestCase.getCaseDir())) {
+//            Date caseAddTime = new Date();
+//            String caseAddTimeStr = DateUtils.format(caseAddTime, DateUtils.DATE_TIME_PATTERN_4DIR);
+//            //random使用时间种子的随机数,避免了轻度并发造成文件夹重名.
+//            String caseFilePath = caseAddTimeStr + new Random(System.nanoTime()).nextInt(1000);
+//            stressTestCase.setCaseDir(caseFilePath);
+//        }
+//
+//        stressTestService.save(stressTestCase);
+
+        return R.ok();
+    }
 
 
 }
