@@ -42,7 +42,8 @@
 			`status`,
 			`operator`,
 			`remark`,
-			`add_by`
+			`content`,
+			`template_id`
 		)
 		values
 		(
@@ -50,7 +51,8 @@
 			#{status},
 			#{operator},
 			#{remark},
-			#{addBy}
+			#{content},
+			#{templateId}
 		)
 	</insert>
 

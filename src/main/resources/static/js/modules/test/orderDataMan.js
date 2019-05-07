@@ -63,48 +63,48 @@ var vm = new Vue({
     },
     methods: {
         changeModes: function () {
-            vm.inputs=[],
-            $.ajax({
-                type: "GET",
-                url: baseURL + "/template/manage/" + vm.modes + "/" + vm.orderMode,
-                success: function (r) {
-                    if (r.code === 0) {
-                        vm.showOrderEdit = true;
-                        vm.orderContent = r.template.content;
-                        const order = JSON.parse(vm.orderContent);
-                        console.log(order);
-                        for (var key in order) {
-                            if (!(order[key] instanceof Object)) {
-                                if (order[key].search("input") !== -1) {
-                                    const pattern = new RegExp(".*?(?=\\()");
-                                    const placeHolder = order[key].match(pattern)[0];
-                                    vm.inputs.push({
-                                        key,
-                                        type: "input",
-                                        placeHolder: placeHolder,
-                                        label: placeHolder
-                                    });
-                                } else if (order[key].search("checkbox") !== -1) {
-                                    const pattern = new RegExp(".*?(?=\\()");
-                                    const label = order[key].match(pattern)[0];
-                                    vm.inputs.push({
-                                        key,
-                                        type: "checkbox",
-                                        checked: key,
-                                        label: label
-                                    });
+            vm.inputs = [],
+                $.ajax({
+                    type: "GET",
+                    url: baseURL + "/template/manage/" + vm.modes + "/" + vm.orderMode,
+                    success: function (r) {
+                        if (r.code === 0) {
+                            vm.showOrderEdit = true;
+                            vm.orderContent = r.template.content;
+                            const order = JSON.parse(vm.orderContent);
+                            console.log(order);
+                            for (var key in order) {
+                                if (!(order[key] instanceof Object)) {
+                                    if (order[key].search("input") !== -1) {
+                                        const pattern = new RegExp(".*?(?=\\()");
+                                        const placeHolder = order[key].match(pattern)[0];
+                                        vm.inputs.push({
+                                            key,
+                                            type: "input",
+                                            placeHolder: placeHolder,
+                                            label: placeHolder
+                                        });
+                                    } else if (order[key].search("checkbox") !== -1) {
+                                        const pattern = new RegExp(".*?(?=\\()");
+                                        const label = order[key].match(pattern)[0];
+                                        vm.inputs.push({
+                                            key,
+                                            type: "checkbox",
+                                            checked: key,
+                                            label: label
+                                        });
+                                    }
+                                } else {
+
                                 }
-                            } else {
-
                             }
-                        }
 
-                        console.log(vm.inputs)
-                    } else {
-                        alert(r.msg);
+                            console.log(vm.inputs)
+                        } else {
+                            alert(r.msg);
+                        }
                     }
-                }
-            });
+                });
         },
         query: function () {
             if (vm.q.dataName != null) {
@@ -131,28 +131,45 @@ var vm = new Vue({
             });
         },
         saveOrUpdate: function () {
-            vm.dataInstance["content"] = vm.content;
+            vm.dataInstance["content"] = JSON.stringify(vm.content);
+            const tem = vm.modes + vm.orderMode;
+            switch (tem) {
+                case "pick0":
+                    vm.dataInstance["templateId"] = "1";
+                    break;
+                case "pick1":
+                    vm.dataInstance["templateId"]= "2";
+                    break;
+                case "rep0":
+                    vm.dataInstance["templateId"] = "3";
+                    break;
+                case "rep1":
+                    vm.dataInstance["templateId"] = "4";
+                    break;
+            }
             console.log(JSON.stringify(vm.dataInstance) + "formJson");
-            // if (vm.validator()) {
-            //     return;
-            // }
-            //
-            // var url = vm.dataInstance.id == null ? "test/stress/save" : "test/stress/update";
-            // $.ajax({
-            //     type: "POST",
-            //     url: baseURL + url,
-            //     contentType: "application/json",
-            //     data: JSON.stringify(vm.dataInstance),
-            //     success: function (r) {
-            //         if (r.code === 0) {
-            //             // alert('操作成功', function(){
-            //             vm.reload();
-            //             // });
-            //         } else {
-            //             alert(r.msg);
-            //         }
-            //     }
-            // });
+
+            if (vm.validator()) {
+                return;
+            }
+
+
+            var url = vm.dataInstance.id == null ? "/order/manage/save" : "/order/manage/update";
+            $.ajax({
+                type: "POST",
+                url: baseURL + url,
+                contentType: "application/json",
+                data: JSON.stringify(vm.dataInstance),
+                success: function (r) {
+                    if (r.code === 0) {
+                        // alert('操作成功', function(){
+                        vm.reload();
+                        // });
+                    } else {
+                        alert(r.msg);
+                    }
+                }
+            });
         },
         del: function () {
             var dataIds = getSelectedRows();
@@ -197,6 +214,14 @@ var vm = new Vue({
 
             if (isBlank(vm.dataInstance.operator)) {
                 alert("操作人不能为空");
+                return true;
+            }
+            if (isBlank(vm.dataInstance.templateId)) {
+                alert("生成方式不能为空");
+                return true;
+            }
+            if (isBlank(vm.dataInstance.content)) {
+                alert("生成配置不能为空");
                 return true;
             }
         }

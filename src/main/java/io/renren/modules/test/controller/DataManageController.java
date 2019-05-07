@@ -1,14 +1,18 @@
 package io.renren.modules.test.controller;
 
 
+import com.mongodb.util.JSON;
 import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
+import io.renren.common.validator.ValidatorUtils;
 import io.renren.modules.test.entity.DataEntity;
 import io.renren.modules.test.entity.DataManEntity;
 import io.renren.modules.test.service.DataManageService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.json.JSONString;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -51,28 +55,23 @@ public class DataManageController {
     }
 
 
-    /**
-     * 创建数据实例
-     *
-     */
-    @RequestMapping("/createDataInstance")
-    @RequiresPermissions("order:manage")
-    public R createNewDataInstance(@RequestBody  DataEntity dataEntity){
 
-
-
-        return R.ok().put("page", null);
-    }
 //    @RequestMapping("")
 
 
     /**
-     * 保存性能测试用例
+     * 保存数据实例
      */
     @SysLog("保存数据实例")
     @RequestMapping("/save")
     @RequiresPermissions("order:manage:save")
-    public R save(@RequestBody DataManEntity dataManEntity) {
+    public R createNewDataInstance(@RequestBody DataManEntity dataManEntity) {
+        String content =dataManEntity.getContent();
+        System.out.println(content);
+        dataManEntity.setContent(content);
+
+        ValidatorUtils.validateEntity(dataManEntity);
+        dataManageService.save(dataManEntity);
 //        ValidatorUtils.validateEntity(stressTestCase);
 //        // 生成用例时即生成用例的文件夹名，上传附件时才会将此名称落地成为文件夹。
 //        if (StringUtils.isEmpty(stressTestCase.getCaseDir())) {
@@ -87,6 +86,18 @@ public class DataManageController {
 
         return R.ok();
     }
+    @SysLog("生成单据")
+    @RequestMapping("/start")
+    @RequiresPermissions("order:manage:start")
+    public R start(@RequestBody DataManEntity dataManEntity){
+
+
+
+
+        return R.ok();
+    }
+
+
 
 
 }

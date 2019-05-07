@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,6 +16,7 @@ public class DataManEntity implements Serializable {
     private long id;
     @Setter
     @Getter
+    @NotBlank(message = "数据实例名不能为空")
     private String dataName;
     /**
      * 备注
@@ -66,8 +68,10 @@ public class DataManEntity implements Serializable {
 
     @Setter
     @Getter
+    @NotNull(message = "数据生成方式需要配置")
     private  int templateId;
     @Setter
     @Getter
+    @NotBlank( message = "未配置数据生成方式")
     private String content;
 }
