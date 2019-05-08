@@ -110,7 +110,10 @@ public class PickAutoTemplate extends DataTemplate {
 
     @Override
     public void generateOrder() {
-        LinkedBlockingQueue queue= new LinkedBlockingQueue();
-        ThreadPoolExecutor pool = new ThreadPoolExecutor(1,);
+
+
+
+        LinkedBlockingQueue queue= new LinkedBlockingQueue(orderAmountPer);
+        ThreadPoolExecutor pool = new ThreadPoolExecutor(,);
     }
 }

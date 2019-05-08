@@ -1,4 +1,5 @@
 package io.renren.modules.test.bean;
 
-public abstract class DataTemplate implements Strategy {
+public abstract class DataTemplate implements Strategy, DataSourceManage{
+
 }
