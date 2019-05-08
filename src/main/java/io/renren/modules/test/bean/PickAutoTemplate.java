@@ -1,5 +1,7 @@
 package io.renren.modules.test.bean;
 
+import java.util.concurrent.*;
+
 public class PickAutoTemplate extends DataTemplate {
 
     private long gap;
@@ -106,4 +108,9 @@ public class PickAutoTemplate extends DataTemplate {
         return InvenExceGenerRepl;
     }
 
+    @Override
+    public void generateOrder() {
+        LinkedBlockingQueue queue= new LinkedBlockingQueue();
+        ThreadPoolExecutor pool = new ThreadPoolExecutor(1,);
+    }
 }
