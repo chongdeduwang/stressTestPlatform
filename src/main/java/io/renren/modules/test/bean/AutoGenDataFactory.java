@@ -11,6 +11,7 @@ public class AutoGenDataFactory extends DataFactory {
     @Override
     public void genData() {
         if (dataTemplate instanceof PickAutoTemplate){
+            dataTemplate = (PickAutoTemplate) dataTemplate;
 
             return;
         }else if (dataTemplate instanceof  PickCustomTemplate){

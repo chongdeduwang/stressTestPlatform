@@ -56,4 +56,9 @@ public class RepAutoTemplate extends DataTemplate {
     public String getRepOrderState() {
         return repOrderState;
     }
+
+    @Override
+    public void generateOrder() {
+        
+    }
 }
