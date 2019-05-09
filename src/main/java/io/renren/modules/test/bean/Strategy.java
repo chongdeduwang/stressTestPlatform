@@ -4,5 +4,7 @@ public interface Strategy {
 
     void generateOrder();
 
+    void stopGenerate();
+
 
 }
