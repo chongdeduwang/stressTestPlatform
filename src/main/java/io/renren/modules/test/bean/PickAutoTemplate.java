@@ -1,7 +1,11 @@
 package io.renren.modules.test.bean;
 
+import com.alibaba.druid.pool.DruidDataSourceFactory;
 import io.renren.modules.test.bean.bizOrder.PickingOrderCreateBO;
+import io.renren.modules.test.entity.DataSourceEntity;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -171,5 +175,11 @@ public class PickAutoTemplate extends DataTemplate {
 
         }
         return targetList;
+    }
+
+    @Override
+    public Connection getConnection(String url, String user, String pwd) throws SQLException {
+        return null;
+
     }
 }

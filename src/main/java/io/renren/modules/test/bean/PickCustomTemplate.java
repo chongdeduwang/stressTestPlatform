@@ -1,5 +1,8 @@
 package io.renren.modules.test.bean;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class PickCustomTemplate extends DataTemplate {
     private String customer;
     private long goodsKindsScope;
@@ -66,7 +69,17 @@ public class PickCustomTemplate extends DataTemplate {
     }
 
     @Override
+    public Connection getConnection(String url, String user, String pwd) throws SQLException {
+        return null;
+    }
+
+    @Override
     public void generateOrder() {
+
+    }
+
+    @Override
+    public void stopGenerate() {
 
     }
 }
