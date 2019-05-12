@@ -1,4 +1,6 @@
 package io.renren.modules.test.bean;
 
-public abstract class DataTemplate implements Strategy {
+import java.util.concurrent.ScheduledExecutorService;
+
+public abstract class DataTemplate implements Strategy, DataSourceManage{
 }

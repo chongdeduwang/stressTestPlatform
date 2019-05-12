@@ -1,5 +1,8 @@
 package io.renren.modules.test.bean;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class RepAutoTemplate extends DataTemplate {
     private long gap;
     private long nonExeOrderMax;
@@ -59,6 +62,6 @@ public class RepAutoTemplate extends DataTemplate {
 
     @Override
     public void generateOrder() {
-        
+        ExecutorService pool = Executors.newFixedThreadPool(1);
     }
 }

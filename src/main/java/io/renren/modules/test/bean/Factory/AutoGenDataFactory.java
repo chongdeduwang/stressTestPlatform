@@ -1,4 +1,6 @@
-package io.renren.modules.test.bean;
+package io.renren.modules.test.bean.Factory;
+
+import io.renren.modules.test.bean.*;
 
 public class AutoGenDataFactory extends DataFactory {
 
@@ -14,7 +16,7 @@ public class AutoGenDataFactory extends DataFactory {
             dataTemplate = (PickAutoTemplate) dataTemplate;
 
             return;
-        }else if (dataTemplate instanceof  PickCustomTemplate){
+        }else if (dataTemplate instanceof PickCustomTemplate){
             return;
         }else if (dataTemplate instanceof RepAutoTemplate){
             return;

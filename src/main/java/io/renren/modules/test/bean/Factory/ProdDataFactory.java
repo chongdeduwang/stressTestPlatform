@@ -1,4 +1,6 @@
-package io.renren.modules.test.bean;
+package io.renren.modules.test.bean.Factory;
+
+import io.renren.modules.test.bean.DataFactory;
 
 public class ProdDataFactory extends DataFactory {
     @Override
