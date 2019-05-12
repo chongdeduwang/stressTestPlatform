@@ -106,4 +106,8 @@ public class PickAutoTemplate extends DataTemplate {
         return InvenExceGenerRepl;
     }
 
+    @Override
+    public void generateOrder() {
+
+    }
 }

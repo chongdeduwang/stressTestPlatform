@@ -53,4 +53,8 @@ public class RepCustomTemplate extends DataTemplate {
         return limitPartAndWhole;
     }
 
+    @Override
+    public void generateOrder() {
+
+    }
 }

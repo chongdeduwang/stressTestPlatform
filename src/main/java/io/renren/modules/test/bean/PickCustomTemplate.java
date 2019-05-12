@@ -64,4 +64,9 @@ public class PickCustomTemplate extends DataTemplate {
     public boolean getInvenExceGenerRepl() {
         return InvenExceGenerRepl;
     }
+
+    @Override
+    public void generateOrder() {
+
+    }
 }
