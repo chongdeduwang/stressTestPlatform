@@ -8,10 +8,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
+import java.sql.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -20,6 +17,7 @@ public class DataSourceImpl implements DataSource {
 
     private DataSourceEntity connParam;
     private List<_Connection> conns;
+    private SQLException excp;
     
     
     public DataSourceImpl(DataSourceEntity connParam) {
@@ -131,8 +129,47 @@ public class DataSourceImpl implements DataSource {
     }
 
     public void initConnection() {
+        Driver dbDriver = null;
+        try {
+
+            dbDriver = (Driver) Class.forName(connParam.getDriver()).newInstance();
+            DriverManager.registerDriver(dbDriver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
 
+    }
+
+    public void stop() {
+    }
+
+    public int close() throws SQLException {
+        int cc = 0;
+        Iterator iter = conns.iterator();
+        while (iter.hasNext()){
+            try {
+                ((_Connection) iter.next()).close();
+                cc ++;
+            } catch (SQLException e) {
+
+                if (e instanceof SQLException){
+                    excp = (SQLException) e;
+                }
+                e.printStackTrace();
+            }
+
+        }
+        if (excp!=null){
+            throw excp;
+        }
+        return cc;
     }
 
 
