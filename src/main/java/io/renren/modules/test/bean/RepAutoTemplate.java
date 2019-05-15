@@ -1,5 +1,7 @@
 package io.renren.modules.test.bean;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -60,8 +62,21 @@ public class RepAutoTemplate extends DataTemplate {
         return repOrderState;
     }
 
+
+
     @Override
-    public void generateOrder() {
-        ExecutorService pool = Executors.newFixedThreadPool(1);
+    public ResultSet queryBySql(String sql, Connection con) {
+        return null;
+    }
+
+
+    @Override
+    public void generateOrder(String url, Connection connection) {
+
+    }
+
+    @Override
+    public void stopGenerate() {
+
     }
 }

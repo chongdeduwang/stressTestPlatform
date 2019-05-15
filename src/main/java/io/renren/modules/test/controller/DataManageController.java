@@ -1,21 +1,35 @@
 package io.renren.modules.test.controller;
 
 
-import com.mongodb.util.JSON;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
 import io.renren.common.validator.ValidatorUtils;
+//import io.renren.config.DynamicRoutingDataSource;
+import io.renren.datasources.DynamicDataSource;
+import io.renren.modules.test.bean.PickAutoTemplate;
 import io.renren.modules.test.entity.DataEntity;
 import io.renren.modules.test.entity.DataManEntity;
+import io.renren.modules.test.entity.DataSourceEntity;
+import io.renren.modules.test.entity.OrderManEntity;
 import io.renren.modules.test.service.DataManageService;
+import io.renren.modules.test.utils.JDBCUtils;
+import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.json.JSONString;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.beans.Introspector;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +40,8 @@ public class DataManageController {
     @Resource
     DataManageService dataManageService;
 
+    @Autowired
+    private DynamicDataSource dynamicDataSource;
 
     /**
      * 性能测试用例列表
@@ -51,9 +67,8 @@ public class DataManageController {
     public R info(@PathVariable("id") Long id) {
         DataManEntity dataInfo = dataManageService.queryObject(id);
 
-        return R.ok().put("dataInfo",dataInfo );
+        return R.ok().put("dataInfo", dataInfo);
     }
-
 
 
 //    @RequestMapping("")
@@ -66,7 +81,7 @@ public class DataManageController {
     @RequestMapping("/save")
     @RequiresPermissions("order:manage:save")
     public R createNewDataInstance(@RequestBody DataManEntity dataManEntity) {
-        String content =dataManEntity.getContent();
+        String content = dataManEntity.getContent();
         System.out.println(content);
         dataManEntity.setContent(content);
 
@@ -86,18 +101,27 @@ public class DataManageController {
 
         return R.ok();
     }
-    @SysLog("生成单据")
+
+//    @SysLog("生成单据")
     @RequestMapping("/start")
     @RequiresPermissions("order:manage:start")
-    public R start(@RequestBody DataManEntity dataManEntity){
+    public R start(@RequestBody OrderManEntity orderManEntity) throws SQLException {
+        DataManEntity data = orderManEntity.getDataManEntity();
 
+        DataSourceEntity db = orderManEntity.getDataSourceEntity();
+        //getDataBaseInfo
+        JDBCUtils jdbcUtils = new JDBCUtils(db.getUrl(),db.getUser(),db.getPassword());
+        Connection cn = jdbcUtils.getConnection();
+
+        JSONObject jsonObject = JSONObject.parseObject(data.getContent());
+        PickAutoTemplate pickAutoTemplate = JSON.toJavaObject(jsonObject,PickAutoTemplate.class);
+        
+        pickAutoTemplate.generateOrder(orderManEntity.getInterfaceUrl(),cn);
 
 
 
         return R.ok();
     }
-
-
 
 
 }

@@ -109,8 +109,8 @@ public class PickingOrderCreateBO {
 
 
 
-    String jsonContent(PickingOrderCreateBO pickingOrderCreateBO,int goodsScope, int goodsAmount){
-
-        return JSON.toJSONString(pickingOrderCreateBO);
-    }
+//    public String jsonContent(PickingOrderCreateBO pickingOrderCreateBO){
+//
+//        return JSON.toJSONString(pickingOrderCreateBO);
+//    }
 }

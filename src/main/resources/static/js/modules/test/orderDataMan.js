@@ -10,7 +10,25 @@ $(function () {
             {label: '内容', name: 'content', sortable: false, width: 80},
             {label: '模板', name: 'templateName', sortable: true, width: 60},
             // { label: 'cron表达式 ', name: 'cronExpression', width: 100 },
-            {label: '备注', name: 'remark', sortable: false, width: 110}
+            {label: '备注', name: 'remark', sortable: false, width: 110},
+            {
+                label: '执行操作', name: '', width: 95, sortable: false, formatter: function (value, options, row) {
+                    var btn = '';
+                    if (!(getExtension(row.originName) && /^(jmx)$/.test(getExtension(row.originName).toLowerCase()))) {
+                        btn = "<a href='#' class='btn btn-primary' onclick='synchronizeFile(" + row.fileId + ")' ><i class='fa fa-arrow-circle-right'></i>&nbsp;同步文件</a>";
+                    } else {
+                        if (row.status == 1) {
+                            btn = "<a href='#' class='btn btn-danger' onclick='stopOnce(" + row.fileId + ")' ><i class='fa fa-stop-circle'></i>&nbsp;停止</a>";
+                        } else {
+                            btn = "<a href='#' class='btn btn-primary' onclick='runOnce(" + row.fileId + ")' ><i class='fa fa-arrow-circle-right'></i>&nbsp;启动</a>";
+                        }
+                    }
+                    // var stopBtn = "<a href='#' class='btn btn-primary' onclick='stop(" + row.fileId + ")' ><i class='fa fa-stop'></i>&nbsp;停止</a>";
+                    // var stopNowBtn = "<a href='#' class='btn btn-primary' onclick='stopNow(" + row.fileId + ")' ><i class='fa fa-times-circle'></i>&nbsp;强制停止</a>";
+                    var downloadFileBtn = "&nbsp;&nbsp;<a href='" + baseURL + "test/stressFile/downloadFile/" + row.fileId + "' class='btn btn-primary'><i class='fa fa-download'></i>&nbsp;下载</a>";
+                    return btn + downloadFileBtn;
+                }
+            }
         ],
         viewrecords: true,
         height: 385,

@@ -2,6 +2,9 @@ package io.renren.modules.test.bean;
 
 import lombok.Data;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 
 public class RepCustomTemplate extends DataTemplate {
 
@@ -53,8 +56,21 @@ public class RepCustomTemplate extends DataTemplate {
         return limitPartAndWhole;
     }
 
+
+
     @Override
-    public void generateOrder() {
+    public ResultSet queryBySql(String sql, Connection con) {
+        return null;
+    }
+
+
+    @Override
+    public void generateOrder(String url, Connection connection) {
+
+    }
+
+    @Override
+    public void stopGenerate() {
 
     }
 }

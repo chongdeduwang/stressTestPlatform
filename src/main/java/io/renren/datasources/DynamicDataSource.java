@@ -1,13 +1,18 @@
 package io.renren.datasources;
 
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 动态数据源
+ *
  * @author chenshun
  * @email sunlightcs@gmail.com
  * @date 2017/8/19 1:03

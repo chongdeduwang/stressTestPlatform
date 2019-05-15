@@ -1,6 +1,7 @@
 package io.renren.modules.test.bean;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PickCustomTemplate extends DataTemplate {
@@ -68,18 +69,22 @@ public class PickCustomTemplate extends DataTemplate {
         return InvenExceGenerRepl;
     }
 
-    @Override
-    public Connection getConnection(String url, String user, String pwd) throws SQLException {
-        return null;
-    }
+
+
+
 
     @Override
-    public void generateOrder() {
+    public void generateOrder(String url, Connection connection) {
 
     }
 
     @Override
     public void stopGenerate() {
 
+    }
+
+    @Override
+    public ResultSet queryBySql(String sql, Connection con) {
+        return null;
     }
 }

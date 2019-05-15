@@ -50,7 +50,7 @@ public class DataSourceImpl implements DataSource {
     }
 
     private int getConnectionCount() {
-        return
+        return 1;
     }
 
     /**
@@ -218,10 +218,10 @@ public class DataSourceImpl implements DataSource {
             return inUse;
         }
 
-        /**
-         * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
-         * java.lang.reflect.Method, java.lang.Object)
-         */
+//        /**
+//         * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
+//         * java.lang.reflect.Method, java.lang.Object)
+//         */
         public Object invoke(Object proxy, Method m, Object[] args)
                 throws Throwable {
             Object obj = null;
