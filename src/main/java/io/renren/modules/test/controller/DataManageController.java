@@ -116,7 +116,27 @@ public class DataManageController {
         JSONObject jsonObject = JSONObject.parseObject(data.getContent());
         PickAutoTemplate pickAutoTemplate = JSON.toJavaObject(jsonObject,PickAutoTemplate.class);
         
-        pickAutoTemplate.generateOrder(orderManEntity.getInterfaceUrl(),cn);
+        pickAutoTemplate.generateOrder(data.getId(),orderManEntity.getInterfaceUrl(),cn);
+
+        data.setStatus(1);
+        dataManageService.update(data);
+
+        return R.ok();
+    }
+    @RequestMapping("/stop")
+    @RequiresPermissions("order:manage:stop")
+    public R stop(@RequestBody OrderManEntity orderManEntity) throws SQLException {
+        DataManEntity data = orderManEntity.getDataManEntity();
+
+        DataSourceEntity db = orderManEntity.getDataSourceEntity();
+        //getDataBaseInfo
+        JDBCUtils jdbcUtils = new JDBCUtils(db.getUrl(),db.getUser(),db.getPassword());
+        Connection cn = jdbcUtils.getConnection();
+
+        JSONObject jsonObject = JSONObject.parseObject(data.getContent());
+        PickAutoTemplate pickAutoTemplate = JSON.toJavaObject(jsonObject,PickAutoTemplate.class);
+
+        pickAutoTemplate.generateOrder(data.getId(),orderManEntity.getInterfaceUrl(),cn);
 
 
 

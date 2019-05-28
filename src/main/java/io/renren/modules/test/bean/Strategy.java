@@ -4,7 +4,7 @@ import java.sql.Connection;
 
 public interface Strategy {
 
-    void generateOrder(String url,Connection connection);
+    void generateOrder(long id,String url,Connection connection);
 
     void stopGenerate();
 

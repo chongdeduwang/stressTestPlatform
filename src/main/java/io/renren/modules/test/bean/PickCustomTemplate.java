@@ -74,7 +74,7 @@ public class PickCustomTemplate extends DataTemplate {
 
 
     @Override
-    public void generateOrder(String url, Connection connection) {
+    public void generateOrder(long id,String url, Connection connection) {
 
     }
 

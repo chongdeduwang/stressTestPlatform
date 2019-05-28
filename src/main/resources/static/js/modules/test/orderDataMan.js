@@ -14,19 +14,17 @@ $(function () {
             {
                 label: '执行操作', name: '', width: 95, sortable: false, formatter: function (value, options, row) {
                     var btn = '';
-                    if (!(getExtension(row.originName) && /^(jmx)$/.test(getExtension(row.originName).toLowerCase()))) {
-                        btn = "<a href='#' class='btn btn-primary' onclick='synchronizeFile(" + row.fileId + ")' ><i class='fa fa-arrow-circle-right'></i>&nbsp;同步文件</a>";
+
+                    if (row.status == 1) {
+                        btn = "<a href='#' class='btn btn-danger' onclick='stopOnce(" + row.id + ")' ><i class='fa fa-stop-circle'></i>&nbsp;停止</a>";
                     } else {
-                        if (row.status == 1) {
-                            btn = "<a href='#' class='btn btn-danger' onclick='stopOnce(" + row.fileId + ")' ><i class='fa fa-stop-circle'></i>&nbsp;停止</a>";
-                        } else {
-                            btn = "<a href='#' class='btn btn-primary' onclick='runOnce(" + row.fileId + ")' ><i class='fa fa-arrow-circle-right'></i>&nbsp;启动</a>";
-                        }
+                        btn = "<a href='#' class='btn btn-primary' onclick='runMakeData()' ><i class='fa fa-arrow-circle-right'></i>&nbsp;启动</a>";
                     }
+//" + row.id + "
                     // var stopBtn = "<a href='#' class='btn btn-primary' onclick='stop(" + row.fileId + ")' ><i class='fa fa-stop'></i>&nbsp;停止</a>";
                     // var stopNowBtn = "<a href='#' class='btn btn-primary' onclick='stopNow(" + row.fileId + ")' ><i class='fa fa-times-circle'></i>&nbsp;强制停止</a>";
-                    var downloadFileBtn = "&nbsp;&nbsp;<a href='" + baseURL + "test/stressFile/downloadFile/" + row.fileId + "' class='btn btn-primary'><i class='fa fa-download'></i>&nbsp;下载</a>";
-                    return btn + downloadFileBtn;
+                    var stopbtn = "&nbsp;&nbsp;<a href='" + baseURL + "test/stressFile/downloadFile/" + row.fileId + "' class='btn btn-primary'><i class='fa fa-download'></i>&nbsp;下载</a>";
+                    return btn + stopbtn;
                 }
             }
         ],
@@ -69,15 +67,20 @@ var vm = new Vue({
         },
         showList: true,
         showEdit: false,
+        showBenchInfo: false,
         showOrderEdit: false,
         orderContent: {},
         title: null,
         dataInstance: {},
         content: {},
+        dataSourceEntity: {},
+        dataManEntity: {},
         modes: 'pick',
         orderMode: 0,
         inputs: [],
-        radio: 3
+        radio: 3,
+        interfaceUrl: null,
+        startEntity: {}
     },
     methods: {
         changeModes: function () {
@@ -148,6 +151,55 @@ var vm = new Vue({
                 vm.dataInstance = r.dataInfo;
             });
         },
+        runMakeData: function () {
+
+            var dataId = getSelectedRow();
+            if (dataId == null) {
+                return;
+            }
+            var sx = $("#jqGrid").jqGrid('getRowData', dataId);
+            vm.showList = false;
+            vm.showBenchInfo = true;
+            vm.dataManEntity = {
+                id: sx.id,
+                dataName: sx.dataName,
+                remark: sx.remark,
+                templateName: sx.templateName,
+                addTime: sx.addTime,
+                content: sx.content
+            };
+            vm.title = "环境";
+            vm.dataSourceEntity = {};
+
+        },
+        runGenData: function () {
+            var url = "/order/manage/start";
+            vm.startEntity = {
+                interfaceUrl: vm.interfaceUrl,
+                dataManEntity: vm.dataManEntity,
+                dataSourceEntity: vm.dataSourceEntity
+            };
+            if (!(vm.dataSourceEntity == null) &&  !(vm.interfaceUrl == null)) {
+
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + url,
+                    contentType: "application/json",
+                    data: JSON.stringify(vm.startEntity),
+                    success: function (r) {
+                        if (r.code === 0) {
+                            // alert('操作成功', function(){
+                            vm.reload();
+                            // });
+                        } else {
+                            alert(r.msg);
+                        }
+                    }
+                });
+            }
+
+        },
+
         saveOrUpdate: function () {
             vm.dataInstance["content"] = JSON.stringify(vm.content);
             const tem = vm.modes + vm.orderMode;
@@ -156,7 +208,7 @@ var vm = new Vue({
                     vm.dataInstance["templateId"] = "1";
                     break;
                 case "pick1":
-                    vm.dataInstance["templateId"]= "2";
+                    vm.dataInstance["templateId"] = "2";
                     break;
                 case "rep0":
                     vm.dataInstance["templateId"] = "3";
@@ -217,6 +269,7 @@ var vm = new Vue({
             vm.showList = true;
             vm.showEdit = false;
             vm.showOrderEdit = false;
+            vm.showBenchInfo = false;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
             $("#jqGrid").jqGrid('setGridParam', {
                 postData: {'dataName': vm.q.dataName},
@@ -244,15 +297,10 @@ var vm = new Vue({
             }
         }
 
-        // uploadFiles: function () {
-        //     var caseId = getSelectedRow();
-        //     if (caseId == null) {
-        //         return;
-        //     }
-        //
-        //     $('#files').fileinput('upload');
-        //
-        // }
+
     }
 });
 
+function runMakeData() {
+    vm.runMakeData();
+}

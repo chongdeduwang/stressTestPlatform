@@ -17,7 +17,7 @@ import java.util.concurrent.*;
 
 public class PickAutoTemplate extends DataTemplate {
 
-    private ScheduledExecutorService threadpool;
+    private HashMap<Long,ScheduledExecutorService> threadpoolMap =new HashMap<>();
 
 
     private long gap;
@@ -125,8 +125,9 @@ public class PickAutoTemplate extends DataTemplate {
     }
 
     @Override
-    public void generateOrder(String interfaceurl,Connection cn) {
-        threadpool = new ScheduledThreadPoolExecutor(Math.toIntExact(getOrderAmountPer()));
+    public void generateOrder(long id, String interfaceurl,Connection cn) {
+        ScheduledExecutorService threadpool = new ScheduledThreadPoolExecutor(Math.toIntExact(getOrderAmountPer()));
+        threadpoolMap.put(id,threadpool);
         ResultSetMapper<GoodsInfoEntity> resultSetMapper = new ResultSetMapper<>();
         List<GoodsInfoEntity> goodsAll = new ArrayList<>();
         if (getGoodsKindsScope() !=0){
@@ -194,9 +195,9 @@ public class PickAutoTemplate extends DataTemplate {
 
     @Override
     public void stopGenerate() {
-        while (threadpool.isShutdown()){
-            threadpool.shutdown();
-        }
+//        while (threadpool.isShutdown()){
+//            threadpool.shutdown();
+//        }
     }
 
 
