@@ -5,12 +5,12 @@ spring:
         druid:
             first:  #数据源1
 #                url: jdbc:mysql://114.116.185.117:3306/renren_fast?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-                url: jdbc:mysql://localhost:3306/renren_fast?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+                url: jdbc:mysql://192.168.24.174:3306/renren_fast?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
                 username: root
 #                password: Passw0rd!
                 password: 840927
             second:  #数据源2
-                url: jdbc:mysql://localhost:3306/renren_fast?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+                url: jdbc:mysql://192.168.24.174:3306/renren_fast?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
                 username: root
                 password: 840927
             initial-size: 10
@@ -21,7 +21,7 @@ spring:
             max-pool-prepared-statement-per-connection-size: 20
             time-between-eviction-runs-millis: 60000
             min-evictable-idle-time-millis: 300000
-            validation-query: SELECT 1 FROM DUAL
+            validation-query: SELECT 1 FROM DUALi
             test-while-idle: true
             test-on-borrow: true
             test-on-return: false
