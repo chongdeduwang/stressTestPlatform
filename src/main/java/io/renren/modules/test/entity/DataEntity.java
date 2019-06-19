@@ -12,7 +12,7 @@ public class DataEntity {
 //    private Strategy strategy;
     @NotBlank(message="订单间时间间隔不能为空")
     private long orderGap;
-    @NotBlank(message="单词下发订单数量不能为空")
+    @NotBlank(message="单次下发订单数量不能为空")
     private long orderAmount;
     @NotBlank(message = "客户需要选择")
     private String customer;

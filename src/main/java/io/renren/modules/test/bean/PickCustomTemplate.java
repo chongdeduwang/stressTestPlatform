@@ -79,7 +79,7 @@ public class PickCustomTemplate extends DataTemplate {
     }
 
     @Override
-    public void stopGenerate() {
+    public void stopGenerate(long id) {
 
     }
 

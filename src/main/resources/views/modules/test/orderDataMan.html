@@ -32,7 +32,7 @@
     <div v-show="showList">
         <div class="grid-btn" style="height:34px;">
             <div class="form-group col-sm-2">
-                <input type="text" class="form-control" v-model="q.dataName" @keyup.enter="query" placeholder="用例名称">
+                <input type="text" class="form-control" v-model="q.dataName" @keyup.enter="query" placeholder="数据名称">
             </div>
             <a class="btn btn-default" @click="query">查询</a>
             <a v-if="hasPermission('order:manage')" class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
@@ -85,6 +85,18 @@
     <div v-show="showEdit" class="panel panel-default">
         <div class="panel-heading">{{title}}</div>
         <form class="form-horizontal">
+            <div class="form-group2">
+                <el-radio-group v-model="modes" @change="changeModes">
+                    <el-radio-button label="pick">出库</el-radio-button>
+                    <el-radio-button label="rep">入库</el-radio-button>
+                </el-radio-group>
+            </div>
+            <div class="form-group2">
+                <el-radio-group v-model="orderMode" @change="changeModes">
+                    <el-radio-button label="0">并发</el-radio-button>
+                    <el-radio-button label="1">压力</el-radio-button>
+                </el-radio-group>
+            </div>
             <div class="form-group">
                 <div class="col-sm-2 control-label">数据名称</div>
                 <div class="col-sm-10">
@@ -100,7 +112,7 @@
             <div class="form-group">
                 <div class="col-sm-2 control-label">备注</div>
                 <div class="col-sm-10">
-                    <textarea class="form-control" v-model="dataInstance.remark" rows="6" placeholder="描述">
+                    <textarea class="form-control" v-model="dataInstance.remark" rows="3" placeholder="描述">
                     </textarea>
                 </div>
             </div>
@@ -112,18 +124,10 @@
             <!--                    <br/>-->
             <!--                </div>-->
             <!--            </div>-->
-            <div class="form-group2">
-                <el-radio-group v-model="modes" @change="changeModes">
-                    <el-radio-button label="pick">拣选</el-radio-button>
-                    <el-radio-button label="rep">上架</el-radio-button>
-                </el-radio-group>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">生成策略</div>
             </div>
-            <div class="form-group2">
-                <el-radio-group v-model="orderMode" @change="changeModes">
-                    <el-radio-button label="0">自动</el-radio-button>
-                    <el-radio-button label="1">自定义</el-radio-button>
-                </el-radio-group>
-            </div>
+            <hr>
             <div v-for="input in inputs" class="form-group2">
                 <div v-show="showOrderEdit">
                     <div v-if="input.type =='input'">
@@ -132,7 +136,7 @@
                                :placeholder="input.placeholder"/>
                     </div>
                     <div v-if="input.type =='checkbox'">
-                        <el-checkbox v-model="content[input.checked]" :label="input.label" border></el-checkbox>
+                        <el-checkbox v-model="content[input.checked]" :label="input.label"  border></el-checkbox>
                     </div>
                     <!--                    <div v-if="input.type =='checkbox'">-->
                     <!--                        <input type="checkbox" v-model="content[input.checked]" :name="input.key"-->

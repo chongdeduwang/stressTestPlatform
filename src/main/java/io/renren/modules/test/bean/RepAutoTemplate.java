@@ -76,7 +76,7 @@ public class RepAutoTemplate extends DataTemplate {
     }
 
     @Override
-    public void stopGenerate() {
+    public void stopGenerate(long id) {
 
     }
 }

@@ -64,6 +64,7 @@
             <if test="operator != null">`operator` = #{operator},</if>
             <if test="remark != null">`remark` = #{remark},</if>
             <if test="updateBy != null">`update_by` = #{updateBy},</if>
+            `update_time`= NOW()
         </set>
         where id = #{id}
     </update>

@@ -9,12 +9,14 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 
 @SpringBootApplication(exclude =
         {DataSourceAutoConfiguration.class,
                 MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @Import({DynamicDataSourceConfig.class})
+@EnableAsync
 public class RenrenApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

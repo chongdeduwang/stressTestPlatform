@@ -8,12 +8,15 @@ import io.renren.modules.test.entity.DataSourceEntity;
 import io.renren.modules.test.entity.GoodsInfoEntity;
 import io.renren.modules.test.entity.ResultSetMapper;
 import io.renren.modules.test.utils.HttpUtil;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import ucar.httpservices.HTTPUtil;
 
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
 import java.util.concurrent.*;
+
 
 public class PickAutoTemplate extends DataTemplate {
 
@@ -125,6 +128,7 @@ public class PickAutoTemplate extends DataTemplate {
     }
 
     @Override
+    @Async
     public void generateOrder(long id, String interfaceurl,Connection cn) {
         ScheduledExecutorService threadpool = new ScheduledThreadPoolExecutor(Math.toIntExact(getOrderAmountPer()));
         threadpoolMap.put(id,threadpool);
@@ -152,7 +156,7 @@ public class PickAutoTemplate extends DataTemplate {
                 p.setId(Long.valueOf(1));
                 p.setOrderDate(new Date());
                 p.setOrderType("PURCHASE");
-                p.setOwnerCode("KC");
+                p.setOwnerCode("vip");
                 List<GoodsInfoEntity> list = new ArrayList<>();
                 Random rd = new Random();
                 list = getListUnique(finalGoodsAll, rd.nextInt(Math.toIntExact(getGoodsKindsScope())+1));
@@ -164,7 +168,7 @@ public class PickAutoTemplate extends DataTemplate {
                     PickingOrderCreateDetailBO detailBO = new PickingOrderCreateDetailBO();
 
                     detailBO.setFulfillQuantity(0);
-                    detailBO.setOwnerCode("KC");
+                    detailBO.setOwnerCode("vip");
                     detailBO.setLotId(list.get(i).getLotId());
                     detailBO.setQuantity(rd.nextInt(Math.toIntExact(getGoodsAmountScope())));
                     detailBO.setPackId(list.get(i).getPackId());
@@ -194,7 +198,11 @@ public class PickAutoTemplate extends DataTemplate {
     }
 
     @Override
-    public void stopGenerate() {
+    public void stopGenerate(long id) {
+        ScheduledExecutorService threadpool = threadpoolMap.get(id);
+        while(!threadpool.isShutdown()){
+            threadpool.shutdown();
+        }
 //        while (threadpool.isShutdown()){
 //            threadpool.shutdown();
 //        }
